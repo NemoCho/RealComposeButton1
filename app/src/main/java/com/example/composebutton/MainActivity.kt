@@ -1,9 +1,11 @@
 package com.example.composebutton
 
 import android.annotation.SuppressLint
+import android.icu.text.Transliterator
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -11,6 +13,7 @@ import androidx.annotation.RawRes
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.parcel.RawValue
 import kotlinx.android.synthetic.main.activity_main.*
+import org.w3c.dom.Text
 import java.math.BigDecimal
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
 
         val Tablakey: MutableList<String> = ArrayList()
@@ -105,6 +107,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
                 }
+
                 TablaNote2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
                     override fun onItemSelected(
@@ -199,89 +202,129 @@ class MainActivity : AppCompatActivity() {
             it.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
 
+                    val note1: Int = TablaNote1.selectedItemPosition
+                    val note1audio: Any = Tablaaudio[note1]
+                    val note2: Int = TablaNote2.selectedItemPosition
+                    val note2audio: Any = Tablaaudio[note2]
+                    val note3: Int = TablaNote3.selectedItemPosition
+                    val note3audio: Any = Tablaaudio[note3]
+                    val note4: Int = TablaNote4.selectedItemPosition
+                    val note4audio: Any = Tablaaudio[note4]
 
-                    val tablaPlayer: MediaPlayer = MediaPlayer.create(this@MainActivity, TablaNote1.tag as Int)
+
+                    Log.i("test", note1.toString())
+                    val tablaPlayer: MediaPlayer =
+                        MediaPlayer.create(this@MainActivity, note1audio as Int)
                     tablaPlayer.start()
-                    //having trouble with this part. I want to play each of the 4 tags 'TablaNoteX.tag' one after the other. Ideally, we can define the speed of the audio by the beat length entered by the user.
+                    tablaPlayer.setOnCompletionListener {
 
 
-                }
-            })
-        }
+                        val tablaPlayer: MediaPlayer = MediaPlayer.create(this@MainActivity, note2audio as Int)
+                        tablaPlayer.start()
 
-        val composebutton: Button = (Composebutton).also {
-
-            it.setOnClickListener(object : View.OnClickListener {
-                @SuppressLint("SetTextI18n")
-                override fun onClick(v: View?) {
+                        tablaPlayer.setOnCompletionListener {
 
 
-                    val beatlength1: EditText = findViewById(R.id.beatLengthEditText)
-                    val beatlength2: EditText = findViewById(R.id.beatLengthEditText2)
-                    val beatlength4: EditText = findViewById(R.id.beatLengthEditText3)
-                    val beatlength3: EditText = findViewById(R.id.BeatLengthEditText6)
-                    val compositionlength: TextView =
-                        findViewById(R.id.CompositionLengthtextView2)
-                    val cyclelengthvalue: EditText =
-                        findViewById(R.id.CycleLengthValueEditText)
+                            val tablaPlayer: MediaPlayer = MediaPlayer.create(this@MainActivity, note3audio as Int)
+                            tablaPlayer.start()
+                            tablaPlayer.setOnCompletionListener {
 
 
-                    val start1: TextView = findViewById(R.id.Start1editText8)
-                    val start2: TextView = findViewById(R.id.Start2editText13)
-                    val start3: TextView = findViewById(R.id.Start3editText7)
-                    val start4: TextView = findViewById(R.id.Start4editText9)
-                    val end1: TextView = findViewById(R.id.End1editText10)
-                    val end2: TextView = findViewById(R.id.End2editText11)
-                    val end3: TextView = findViewById(R.id.End3editText12)
-                    val end4: TextView = findViewById(R.id.End4editText14)
 
-                    if (beatlength1.text.toString() == "") {
-                        return
-                    } else if (beatlength2.text.toString() == "") {
-                        return
-                    } else if (beatlength3.text.toString() == "") {
-                        return
-                    } else if (beatlength4.text.toString() == "") {
-                        return
-                    } else if (cyclelengthvalue.text.toString() == "") {
-                        return
-                    } else {
-
-                        val num1: BigDecimal = beatlength1.text.toString().toBigDecimal()
-                        val num2: BigDecimal = beatlength2.text.toString().toBigDecimal()
-                        val num3: BigDecimal = beatlength3.text.toString().toBigDecimal()
-                        val num4: BigDecimal = beatlength4.text.toString().toBigDecimal()
-                        val num5: BigDecimal =
-                            cyclelengthvalue.text.toString().toBigDecimal()
+                                val tablaPlayer: MediaPlayer = MediaPlayer.create(this@MainActivity, note4audio as Int)
+                                tablaPlayer.start()
+                                tablaPlayer.setOnCompletionListener {
 
 
-                        val answer1 = num1 + num2 + num3 + num4
-                        compositionlength.text = answer1.toString()
 
-                        val answer2 = 0
-                        start1.text = "Start  " + answer2.toString()
 
-                        val answer3: BigDecimal = num1
-                        end1.text = "End  " + answer3.toString()
-                        start2.text = "Start  " + answer3.toString()
+                                    //having trouble with this part. I want to play each of the 4 tags 'TablaNoteX.tag' one after the other. Ideally, we can define the speed of the audio by the beat length entered by the user.
 
-                        val answer4: BigDecimal = answer3 + num2
-                        end2.text = "End  " + answer4.toString()
-                        start3.text = "Start  " + answer4.toString()
-
-                        val answer5: BigDecimal = answer4 + num3
-                        end3.text = "End  " + answer5.toString()
-                        start4.text = "Start  " + answer5.toString()
-
-                        val answer6: BigDecimal = answer5 + num4
-                        end4.text = "End  " + answer6.toString()
-
+                                }
+                            }
+                        }
                     }
-                }
-            })
-        }
+
+
+                }})}
+                    val composebutton: Button = (Composebutton).also {
+
+                        it.setOnClickListener(object : View.OnClickListener {
+                            @SuppressLint("SetTextI18n")
+                            override fun onClick(v: View?) {
+
+
+                                val beatlength1: EditText = findViewById(R.id.beatLengthEditText)
+                                val beatlength2: EditText = findViewById(R.id.beatLengthEditText2)
+                                val beatlength4: EditText = findViewById(R.id.beatLengthEditText3)
+                                val beatlength3: EditText = findViewById(R.id.BeatLengthEditText6)
+                                val compositionlength: TextView =
+                                    findViewById(R.id.CompositionLengthtextView2)
+                                val cyclelengthvalue: EditText =
+                                    findViewById(R.id.CycleLengthValueEditText)
+
+
+                                val start1: TextView = findViewById(R.id.Start1editText8)
+                                val start2: TextView = findViewById(R.id.Start2editText13)
+                                val start3: TextView = findViewById(R.id.Start3editText7)
+                                val start4: TextView = findViewById(R.id.Start4editText9)
+                                val end1: TextView = findViewById(R.id.End1editText10)
+                                val end2: TextView = findViewById(R.id.End2editText11)
+                                val end3: TextView = findViewById(R.id.End3editText12)
+                                val end4: TextView = findViewById(R.id.End4editText14)
+
+                                if (beatlength1.text.toString() == "") {
+                                    return
+                                } else if (beatlength2.text.toString() == "") {
+                                    return
+                                } else if (beatlength3.text.toString() == "") {
+                                    return
+                                } else if (beatlength4.text.toString() == "") {
+                                    return
+                                } else if (cyclelengthvalue.text.toString() == "") {
+                                    return
+                                } else {
+
+                                    val num1: BigDecimal =
+                                        beatlength1.text.toString().toBigDecimal()
+                                    val num2: BigDecimal =
+                                        beatlength2.text.toString().toBigDecimal()
+                                    val num3: BigDecimal =
+                                        beatlength3.text.toString().toBigDecimal()
+                                    val num4: BigDecimal =
+                                        beatlength4.text.toString().toBigDecimal()
+                                    val num5: BigDecimal =
+                                        cyclelengthvalue.text.toString().toBigDecimal()
+
+
+                                    val answer1 = num1 + num2 + num3 + num4
+                                    compositionlength.text = answer1.toString()
+
+                                    val answer2 = 0
+                                    start1.text = "Start  " + answer2.toString()
+
+                                    val answer3: BigDecimal = num1
+                                    end1.text = "End  " + answer3.toString()
+                                    start2.text = "Start  " + answer3.toString()
+
+                                    val answer4: BigDecimal = answer3 + num2
+                                    end2.text = "End  " + answer4.toString()
+                                    start3.text = "Start  " + answer4.toString()
+
+                                    val answer5: BigDecimal = answer4 + num3
+                                    end3.text = "End  " + answer5.toString()
+                                    start4.text = "Start  " + answer5.toString()
+
+                                    val answer6: BigDecimal = answer5 + num4
+                                    end4.text = "End  " + answer6.toString()
+
+                                }
+                            }
+                        })
+                    }
     }
 }
+
 
 
 
