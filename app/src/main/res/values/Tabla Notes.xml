@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Tabla_Notes">
+
+        <item>Dha</item>
+        <item>Dhin</item>
+        <item>Na</item>
+        <item>Tin</item>
+        <item>Tak</item>
+        <item>TiReKiTe</item>
+        <item>TiTe</item>
+        <item>Tun</item>
+        <item>Kat</item>
+        <item>Ka</item>
+        <item>Dhere Dhere</item>
+        <item>Kere Kere</item>
+        <item>Dhere</item>
+        <item>Kere</item>
+        <item>Ghe</item>
+        <item>Ge</item>
+        <item>Ti</item>
+        <item>Te</item>
+        <item>KiTeTaKa</item>
+    </string-array>
+
+
+
+</resources>
