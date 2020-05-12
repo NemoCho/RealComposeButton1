@@ -3,13 +3,16 @@ package com.example.composebutton
 import android.annotation.SuppressLint
 import android.icu.text.Transliterator
 import android.media.MediaPlayer
+import android.media.PlaybackParams
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RawRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.parcel.RawValue
 import kotlinx.android.synthetic.main.activity_main.*
@@ -200,6 +203,7 @@ class MainActivity : AppCompatActivity() {
 
         val playcompbutton: Button = (playcompbutton).also {
             it.setOnClickListener(object : View.OnClickListener {
+                @RequiresApi(Build.VERSION_CODES.M)
                 override fun onClick(v: View?) {
 
                     val note1: Int = TablaNote1.selectedItemPosition
@@ -211,36 +215,64 @@ class MainActivity : AppCompatActivity() {
                     val note4: Int = TablaNote4.selectedItemPosition
                     val note4audio: Any = Tablaaudio[note4]
 
+                    val beatlength1: EditText = findViewById(R.id.beatLengthEditText)
+                    val beatlength2: EditText = findViewById(R.id.beatLengthEditText2)
+                    val beatlength4: EditText = findViewById(R.id.beatLengthEditText3)
+                    val beatlength3: EditText = findViewById(R.id.BeatLengthEditText6)
+                    if (beatlength1.text.toString() == "") {
+                        return
+                    } else if (beatlength2.text.toString() == "") {
+                        return
+                    } else if (beatlength3.text.toString() == "") {
+                        return
+                    } else if (beatlength4.text.toString() == "") {
+                        return
+                    }
+                     else {
+
+                        val num1: Float =
+                           1/beatlength1.text.toString().toFloat()
+                        val num2: Float =
+                            1/beatlength2.text.toString().toFloat()
+                        val num3: Float =
+                            1/beatlength3.text.toString().toFloat()
+                        val num4: Float =
+                            1/beatlength4.text.toString().toFloat()
+
 
                     Log.i("test", note1.toString())
                     val tablaPlayer: MediaPlayer =
                         MediaPlayer.create(this@MainActivity, note1audio as Int)
+                    tablaPlayer.playbackParams = PlaybackParams().setSpeed(num1)
                     tablaPlayer.start()
                     tablaPlayer.setOnCompletionListener {
 
 
                         val tablaPlayer: MediaPlayer = MediaPlayer.create(this@MainActivity, note2audio as Int)
+                        tablaPlayer.playbackParams = PlaybackParams().setSpeed(num2)
                         tablaPlayer.start()
 
                         tablaPlayer.setOnCompletionListener {
 
 
                             val tablaPlayer: MediaPlayer = MediaPlayer.create(this@MainActivity, note3audio as Int)
+                            tablaPlayer.playbackParams = PlaybackParams().setSpeed(num3)
                             tablaPlayer.start()
                             tablaPlayer.setOnCompletionListener {
 
 
 
                                 val tablaPlayer: MediaPlayer = MediaPlayer.create(this@MainActivity, note4audio as Int)
+                                tablaPlayer.playbackParams = PlaybackParams().setSpeed(num4)
                                 tablaPlayer.start()
                                 tablaPlayer.setOnCompletionListener {
 
 
 
 
-                                    //having trouble with this part. I want to play each of the 4 tags 'TablaNoteX.tag' one after the other. Ideally, we can define the speed of the audio by the beat length entered by the user.
 
-                                }
+
+                                }}
                             }
                         }
                     }
